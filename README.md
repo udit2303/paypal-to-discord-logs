@@ -6,4 +6,4 @@ in index.js, `res.send('asd')` would print `asd` at the success page. I will fix
 
 
 
-`res.send()` will have HTML formatting, eg `<a href = "https://google.com"> this is google </a>`
+`res.send()` will have HTML formatting, eg `res.send('<a href = "https://google.com"> this is google </a>')` will create a hyperlink to google with the name 'this is google'
