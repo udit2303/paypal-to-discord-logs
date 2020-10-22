@@ -5,6 +5,11 @@ const paypal = require('paypal-rest-sdk');
 const Discord = require('discord.js');
 const db = require('quick.db');
 const client = new Discord.Client();
+const guild = '<guild id>';
+const channel = '<channel id>';
+
+
+
 
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
@@ -80,18 +85,15 @@ app.get('/success', (req, res) => {
         throw error;
     } else {
       const pay = payment.id;
-      client.on('message', message => {
-        const ab = db.fetch(`paypal`);
-        for(var n in ab){
-        if(pay == ab[n]) return;
-      }
+      res.send('<a href = "https://google.com"> 1123 </a>');
+  
       const amount = JSON.stringify(payment.transactions[0].amount.total)
       const cur = JSON.stringify(payment.transactions[0].amount.currency)
       const ver = amount.replace("\"", "");
       const ver2 = ver.replace("\"", "");
       const ver3 = cur.replace("\"", "");
       const ver4 = ver3.replace("\"", "");
-      const final = `${ver2} ` + `${ver4}`;
+      const final = ver2  + ver4;
       const embed = new Discord.MessageEmbed()
       .setTitle('New Donation')
       .setColor('BLUE')
@@ -99,15 +101,10 @@ app.get('/success', (req, res) => {
       .addField('Transaction ID:', pay , true)
       .addField('Amount:',`**${final}**`, true)
       .addField('Item Purchased:',JSON.stringify(payment.transactions[0].item_list.items[0].name));
-        if(message.author.bot) return ;
-        message.channel.send(embed);
-        db.push(`paypal`, pay);
-        
-      })
+       client.guilds.cache.get(guild).channels.cache.get(channel).send(embed);
+       db.push(`paypal`, pay);
       
-        //console.log(JSON.stringify(payment.id));
-        console.log(JSON.stringify(payment.transactions[0].amount.total))
-        res.send('asd');
+      
     }
 });
 });
@@ -118,7 +115,7 @@ client.on("ready", () => {
 client.on("warn", (info) => console.log(info));
 client.on("error", console.error);
 
-client.login('idk what to put here')
+client.login('token here')
 app.get('/cancel', (req, res) => res.send('Cancelled'));
 
 app.listen(3000, () => console.log('Server Started'));
